@@ -1,0 +1,24 @@
+.pixel {
+	height: 50px;
+	width: 50px;
+	background-color: white;
+	/*border: none;*/
+}
+
+.darkPixel {
+	height: 50px;
+	width: 50px;
+	background-color: #222;
+}
+
+.row {
+	background: black;
+	padding: 3px;
+	width: 267px;
+}
+
+.container {
+	background: black;
+	padding: 3px;
+	width: 272px;
+}
