@@ -16,7 +16,8 @@ $(document).ready(function(){
 
 	net.train([train1.v1, train1.v2, train1.v3,
 			  train2.v1, train2.v2, train2.v3,
-			  train3.v1, train3.v2, train3.v3]);
+			  train3.v1, train3.v2, train3.v3,
+			  train4.v1, train4.v2, train4.v3]);
 
 	$(".pixel").click(function(event) {
 		var idx = parseInt($(this).attr('id'));
