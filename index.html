@@ -62,12 +62,28 @@
 			Pesquisa nestas começou bem mais cedo na história da computação, com o papel universitário que descrevia o <i>Perceptron</i> sendo publicado em 1958, mas tendo sua invenção datada em 1957; Outras personalidades famosas na história da computação também tiveram seus avanços no assunto, como Alan Turing.<br></p>
 			<figure>
 				<img src="src/perceptron.png" alt="Perceptron visualizado">
-				<figcaption>Fig. 1: Representação visual de um perceptron.</figcaption>
+				<figcaption>Fig. 1: Representação visual de um perceptron. <i>x₁</i> é o primeiro input, enquanto <i>x₂</i> serve como o segundo. Os pesos <i>w₁</i> e <i>w₂</i> são aplicados em cima dos valores <i>x₁</i> e <i>x₂</i> e somados com um bias <i>b</i>, com o valor final passando por uma função logística <i>Σ</i> para obter o valor final (output) <i>y</i>.</figcaption>
 			</figure>
+			<h2>O que está acontecendo aqui?</h2>
+			<p>Este projeto usa um modelo de rede neural chamado "perceptron multi-camada", no qual adicionamos camadas escondidas no modelo anterior. Cada "pixel" que você clica é, na verdade, um botão estilizado, cujo é representado como um "0" se estiver apagado ou "1" se estiver aceso. 
+				A grade é composta por 25 botões, portanto 25 destes valores, dependendo de quais são ligados são enviados para a rede neural. 
+			   (OPCIONAL) Veja por você mesmo: desenhe algo que você quiser, aperte F12 no seu teclado para ligar a interface de desenvolvedor do Google Chrome, vá para a aba "Console", e clique o botão de Resultado, e o console lhe enviará como que a nossa rede neural vê seu desenho.
+			Ao final de tudo, estes valores são enviados para a rede neural como inputs (são 25 inputs!), e estes serão processados por várias camadas escondidas, que então passarão seus valores para 10 células de output. A célula com o maior valor será a célula que, em ordem, representa o número que foi desenhado.</p>
+			<figure>
+				<img src="src/projeto.png" alt="Rede do Projeto">
+				<figcaption>Fig. 2: Uma ilustração da rede neural usada neste projeto. Preste atenção nas camadas escondidas, usadas para apurar melhor o resultado.
+				</figcaption>
+			</figure>
+			<p>As células azuis são as células de <i>input</i>, as células vermelhas são as células de camadas escondidas (aqui em uma só camada, mas poderão haver mais), enquanto as células verdes são células de <i>output</i>.
+				<i>w¹</i> representa as várias quantidades de pesos, representando as conexões entre as células de input e as células da camada intermediária. São, no total, 25 x n, em que n é a quantidade de células da camada intermediária.
+				<i>w²</i> representa os pesos entre a camada intermediária e a camada de output. São, no total. n x 10, em que n é a quantidade de células da camada intermediária.</p>
 		</div>
-		<!--<div class="trainMenu">
-			hehehe
-		</div>-->
+		<div class="trainMenu">
+			Aqui, você poderá alterar os parâmetros da rede neural, como quantas camadas escondidas, o tamanho destas camadas, e etc.<br>
+			Camadas: (formato: coloque o número de células por camada, em números separados por espaços. Por exemplo, três camadas de cinco células cada: "5 5 5").<br>
+			<input type="text" id="layersArr">
+			<button class="customize">Enviar!</button>
+		</div>
 	</div>
 </body>
 </html>
