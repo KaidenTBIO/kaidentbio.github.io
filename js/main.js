@@ -1,3 +1,4 @@
+// Configuration object for Brain.js
 let config = {
 	binaryThresh: 0.5,
 	inputSize: 25,
@@ -5,6 +6,7 @@ let config = {
 	activation: 'sigmoid'
 };
 
+// Basic input, handled as nothing being drawn
 let input = [
 	0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0,
@@ -14,31 +16,25 @@ let input = [
 ];
 
 $(document).ready(function () {
+	// Network initialization
 	let net = new brain.NeuralNetwork(config);
 
-	/* net.train([train1.v1, train1.v2, train1.v3,
-		train2.v1, train2.v2, train2.v3,
-		train3.v1, train3.v2, train3.v3,
-		train4.v1, train4.v2, train4.v3
-	]); */
+	// trainData from src/training_data.js
+	// TODO: Find better way to initialize training data
 	net.train(trainData);
 
+	// Button handler; toggles buttons and positional values on the input array "on" and "off"
 	$('.pixel').click(function (event) {
 		var idx = parseInt($(this).attr('id'));
 
 		input[idx] = input[idx] ^ 1;
-
-		/*if($(this).attr('class') === 'pixel') {
-			input[idx] = 1;
-		} else {
-			input[idx] = 0;
-		}*/
 
 		$(this).toggleClass('pixel darkPixel');
 
 		return event; //eslint stop screaming at me
 	});
 
+	// Basic network output fetcher
 	$('.getOutput').click(function (event) {
 		const output = net.run(input);
 
@@ -51,13 +47,13 @@ $(document).ready(function () {
 				max = output[i];
 			}
 		}
-		console.log(input);
-		//document.getElementById("result").value = maxIndex;
+
 		$('#result').text(maxIndex.toString());
 
 		return event; //eslint stop screaming at me
 	});
 
+	// Send the input through the network for training, "teaching" that drawing to the network
 	$('.inputforTraining').click(function (event) {
 		var output = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 		var idx = parseInt(document.getElementById('trainOutput').value);
@@ -72,14 +68,41 @@ $(document).ready(function () {
 
 		net.train(trainNow);
 
-		console.log(trainData);
-
 		return event; //eslint stop screaming at me
 	});
 
+	// Asks for user input to customize the network to their liking
+	// TODO: Add activation function selector
+	// TODO: Add "Save network" option; send the user a file that contains the network in a JSON format; make it so the user can send the file back into the website and retrain the network they were fiddling with before
 	$('.customize').click(function (event) {
+		let layers = document.getElementById('layersArr').value;
+		if (layers === "") {
+			alert('Não vejo camadas aqui.');
+			return; 
+		}
+
+		layers = layers.split(' ');
 		
+		let actFunc = document.getElementById('function').value;
 		
-		net = new brain.NeuralNetwork();
+		for(var i = 0; i < layers.length; i++){
+			layers[i] = parseInt(layers[i]);
+
+			// prevents last character being ""
+			// no stupid inputs in my christian code
+			if (isNaN(layers[i])) layers.pop(i);
+		}
+		
+		config = {
+			binaryThresh: 0.5,
+			inputSize: 25,
+			hiddenLayers: layers,
+			activation: actFunc
+		};
+
+		net = new brain.NeuralNetwork(config);
+		net.train(trainData);
+
+		return event; //eslint stop screaming at me
 	});
 });
