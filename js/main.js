@@ -1,23 +1,23 @@
-// Configuration object for Brain.js
-let config = {
-	binaryThresh: 0.5,
-	inputSize: 25,
-	hiddenLayers: [10, 10, 10, 5],
-	activation: 'sigmoid'
-};
-
-// Basic input, handled as nothing being drawn
-let input = [
-	0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0,
-	0, 0, 0, 0, 0
-];
-
 $(document).ready(function () {
+	// Configuration object for Brain.js
+	var config = {
+		binaryThresh: 0.5,
+		inputSize: 25,
+		hiddenLayers: [10, 10, 10, 5],
+		activation: 'sigmoid'
+	};
+
+	// Basic input, handled as nothing being drawn
+	var input = [
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0
+	];
+	
 	// Network initialization
-	let net = new brain.NeuralNetwork(config);
+	var net = new brain.NeuralNetwork(config);
 
 	// trainData from src/training_data.js
 	// TODO: Find better way to initialize training data
@@ -75,23 +75,13 @@ $(document).ready(function () {
 	// TODO: Add activation function selector
 	// TODO: Add "Save network" option; send the user a file that contains the network in a JSON format; make it so the user can send the file back into the website and retrain the network they were fiddling with before
 	$('.customize').click(function (event) {
-		let layers = document.getElementById('layersArr').value;
-		if (layers === "") {
-			alert('Não vejo camadas aqui.');
-			return; 
-		}
+		let layers = [];
 
-		layers = layers.split(' ');
+		$('.layerClass').each(function (index, element) {
+			layers.push(parseInt(element.value));
+		});
 		
 		let actFunc = document.getElementById('function').value;
-		
-		for(var i = 0; i < layers.length; i++){
-			layers[i] = parseInt(layers[i]);
-
-			// prevents last character being ""
-			// no stupid inputs in my christian code
-			if (isNaN(layers[i])) layers.pop(i);
-		}
 		
 		config = {
 			binaryThresh: 0.5,
@@ -104,5 +94,42 @@ $(document).ready(function () {
 		net.train(trainData);
 
 		return event; //eslint stop screaming at me
+	});
+	
+	$('.export').click(function() {
+		const json = JSON.stringify(net.toJSON());
+		
+		let element = document.getElementById('saveLink');
+		element.setAttribute('href', 'data:text/plain;charset=utf-8,' + json);
+		element.setAttribute('download', 'RedeNeural.json');
+		element.innerHTML = 'Baixe sua rede neural!';
+	});
+
+	$('.import').click(function() {
+		let files = document.getElementById('selectFiles').files;
+		if (files.length <= 0) {
+			return false;
+		}
+
+		let fr = new FileReader();
+
+		fr.onload = function(e) {
+			var obj = JSON.parse(e.target.result);
+			net.fromJSON(obj);
+		};
+
+		fr.readAsText(files.item(0));
+
+		//net.fromJSON(result)
+	});
+
+	$('#layersAmt').change(function () { 
+		//e.preventDefault();
+		let v = $(this).val();
+		let htmlthing = '';
+		for(let i = 0; i < v; i++) {
+			htmlthing += `Camada ${i+1}: <input type="number" id="layer${i}" min=1 max=30 class="layerClass"><br>`;
+		}
+		$('#layers').html(htmlthing);
 	});
 });

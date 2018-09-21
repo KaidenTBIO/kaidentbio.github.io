@@ -80,13 +80,20 @@
 		</div>
 		<div class="trainMenu">
 			Aqui, você poderá alterar os parâmetros da rede neural, como quantas camadas escondidas, o tamanho destas camadas, e etc.<br>
-			Camadas: (formato: coloque o número de células por camada, em números separados por espaços. Por exemplo, três camadas de cinco células cada: "5 5 5").<br>
-			<input type="text" id="layersArr">
-			<button class="customize">Enviar!</button>
-			<select id="function">
+			Camadas:
+			<!--<input type="text" id="layersArr" placeholder="5 5 5 5">  (Formato - coloque o número de células por camada, em números separados por espaços.).<br><br>-->
+			<input type="number" id="layersAmt" min="0" max="10">
+			<div id="layers"></div>
+			"Threshold" Binária: <input type="number" min="0" max="1" step="0.1" value="0.5"> (Limite de ativação da célula - 0.5 é recomendado. Clique, e ajuste seu valor com as setas de seu teclado).<br><br>
+			Função de ativação: <select id="function">
 				<option value="sigmoid">Sigmoid</option>
 				<option value="tanh">Tangente Hiperbólica</option>
-			</select>
+			</select><br>
+			<button class="customize">Enviar!</button><br>
+			<br>
+			No botão abaixo, você poderá salvar a rede neural que você treinou aqui. Posteriormente, você poderá também devolver este arquivo mais tarde, para reiniciar sua rede neural.<br>
+			<button class="export">Exportar rede neural</button><a id="saveLink"></a><br>
+			<input type="file" id="selectFiles" value="Import"/><br/><button class="import">Importar rede neural</button>
 		</div>
 	</div>
 </body>
