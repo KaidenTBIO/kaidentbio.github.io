@@ -24,37 +24,36 @@ $(document).ready(function () {
 	net.train(trainData);
 
 	// Button handler; toggles buttons and positional values on the input array "on" and "off"
-	$('.pixel').click(function (event) {
+	$('.pixel').click(function () {
 		var idx = parseInt($(this).attr('id'));
 
 		input[idx] = input[idx] ^ 1;
 
 		$(this).toggleClass('pixel darkPixel');
 
-		return event; //eslint stop screaming at me
 	});
-
+	
 	// Basic network output fetcher
-	$('.getOutput').click(function (event) {
+	$('.getOutput').click(function () {
 		const output = net.run(input);
-
+		
 		var max = output[0];
 		var maxIndex = 0;
-
+		
 		for (let i = 0; i < output.length; i++) {
 			if (output[i] > max) {
 				maxIndex = i;
 				max = output[i];
 			}
 		}
-
+		
+		console.log(input);
+		
 		$('#result').text(maxIndex.toString());
-
-		return event; //eslint stop screaming at me
 	});
 
 	// Send the input through the network for training, "teaching" that drawing to the network
-	$('.inputforTraining').click(function (event) {
+	$('.inputforTraining').click(function () {
 		var output = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 		var idx = parseInt(document.getElementById('trainOutput').value);
 		output[idx] = 1;
@@ -67,14 +66,12 @@ $(document).ready(function () {
 		trainData.push({input: trainNow.input, output: trainNow.output});
 
 		net.train(trainNow);
-
-		return event; //eslint stop screaming at me
 	});
 
 	// Asks for user input to customize the network to their liking
 	// TODO: Add activation function selector
 	// TODO: Add "Save network" option; send the user a file that contains the network in a JSON format; make it so the user can send the file back into the website and retrain the network they were fiddling with before
-	$('.customize').click(function (event) {
+	$('.customize').click(function () {
 		let layers = [];
 
 		$('.layerClass').each(function (index, element) {
@@ -92,8 +89,6 @@ $(document).ready(function () {
 
 		net = new brain.NeuralNetwork(config);
 		net.train(trainData);
-
-		return event; //eslint stop screaming at me
 	});
 	
 	$('.export').click(function() {
