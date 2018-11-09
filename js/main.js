@@ -22,6 +22,8 @@ $(document).ready(function () {
 	// trainData from src/training_data.js
 	// TODO: Find better way to initialize training data
 	net.train(trainData);
+	net.train(trainData);
+	net.train(trainData);
 
 	// Button handler; toggles buttons and positional values on the input array "on" and "off"
 	$('.pixel').click(function () {
@@ -32,6 +34,13 @@ $(document).ready(function () {
 		$(this).toggleClass('pixel darkPixel');
 
 	});
+
+	$('.clearGrid').click(function() {
+		$('.darkPixel').attr('class', 'pixel');
+		for (var i = 0; i < input.length; i++) {
+			input[i] = 0;
+		}
+	});
 	
 	// Basic network output fetcher
 	$('.getOutput').click(function () {
@@ -40,16 +49,32 @@ $(document).ready(function () {
 		var max = output[0];
 		var maxIndex = 0;
 		
+		// meme
+		/*var empty = true;
+		for(let i = 0; i < 25; i ++){
+			empty = empty && (input[i] == 0)
+		}
+		if(empty){
+			$('#result').text("não faça meu menino de idiota, seu filha da puta.");
+			return;
+		}*/
+
 		for (let i = 0; i < output.length; i++) {
 			if (output[i] > max) {
 				maxIndex = i;
 				max = output[i];
 			}
 		}
-		
+
 		console.log(input);
+		console.log(output[maxIndex]);
+		console.log(max);
 		
-		$('#result').text(maxIndex.toString());
+		if (output[maxIndex] < 0.7){
+			$('#result').html(maxIndex.toString() + ", porem impreciso <br/>" + parseInt(output[maxIndex] * 10000)/ 100.0 + "% de certeza");	
+		} else {
+			$('#result').html(maxIndex.toString() + "<br/>" + parseInt(output[maxIndex] * 10000)/ 100.0 + "% de certeza");
+		}
 	});
 
 	// Send the input through the network for training, "teaching" that drawing to the network
